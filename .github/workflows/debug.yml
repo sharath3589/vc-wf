@@ -41,9 +41,6 @@ jobs:
           docker run --privileged --rm -i --env-file .env vcbot
 
       - name: Loop Workflow
-        continue-on-error: false
-        run: |
-                - name: Loop Workflow
         continue-on-error: true
         run: |
           # ${GITHUB_REPOSITORY} is the repo slug which runs this script
