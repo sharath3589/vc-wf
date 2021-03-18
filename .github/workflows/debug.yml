@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
         run: |
           cd source
-          docker run --privileged --rm -i vcbot
+          docker run --privileged --rm -i --env-file .env vcbot
 
       - name: Loop Workflow
         continue-on-error: true
