@@ -31,17 +31,14 @@ jobs:
         run: |
           git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${{ secrets.repo }} source
           cd source
-          sudo apt-get install ffmpeg -y
-          sudo pip3 install -U pip
-          sudo pip3 install wheel setuptools
-          sudo pip3 install -U -r requirements.txt
+          docker build . --rm --force-rm --compress --no-cache=true --pull --file Dockerfile -t vcbot 
 
       - name: running VC bot
         timeout-minutes: 338
         continue-on-error: true
         run: |
           cd source
-          sudo python3 main.py
+          docker run --privileged --rm -i vcbot
 
       - name: Loop Workflow
         continue-on-error: true
