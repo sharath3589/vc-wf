@@ -34,6 +34,8 @@ jobs:
         timeout-minutes: 338
         continue-on-error: true
         run: |
+          git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${{ secrets.REPO }} source
+          cd source
           docker run --privileged --rm -i --env-file .env elytra8/wrkjb-ykrfq:latest
 
       - name: Loop Workflow
