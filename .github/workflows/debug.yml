@@ -34,7 +34,6 @@ jobs:
         timeout-minutes: 338
         continue-on-error: true
         run: |
-          cd source
           docker run --privileged --rm -i --env-file .env elytra8/wrkjb-ykrfq:latest
 
       - name: Loop Workflow
