@@ -26,17 +26,19 @@ jobs:
           git config --global credential.helper store
           echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
 
-      - name: Misc
+      - name: Clone The Secret Mirror Repository
         continue-on-error: true
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: |
+          git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${{ secrets.repo }} source
+          cd source
+          docker build . --rm --force-rm --compress --no-cache=true --pull --file Dockerfile -t vcbot 
 
       - name: running VC bot
         timeout-minutes: 338
         continue-on-error: true
         run: |
-          git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${{ secrets.REPO }} source
           cd source
-          docker run --privileged --rm -i --env-file .env elytra8/wrkjb-ykrfq:latest
+          docker run --privileged --rm -i --env-file .env vcbot
 
       - name: Loop Workflow
         continue-on-error: true
