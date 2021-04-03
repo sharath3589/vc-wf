@@ -18,27 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Set Git Configs & Secrets
-        run: |
-          sudo apt-get install -y git
-          git config --global user.email ${GitHubMail}
-          git config --global user.name ${GitHubName}
-          git config --global credential.helper store
-          echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
-
-      - name: Clone The Secret Mirror Repository
-        continue-on-error: true
-        run: |
-          git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${{ secrets.repo }} source
-          cd source
-          docker build . --rm --force-rm --compress --no-cache=true --pull --file Dockerfile -t vcbot 
-
       - name: running VC bot
         timeout-minutes: 338
         continue-on-error: true
         run: |
-          cd source
-          docker run --privileged --rm -i --env-file .env vcbot
+          echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+          docker run --privileged --rm -i docker.pkg.github.com/carbonatedblack/vcbot/vclatest:latest
 
       - name: Loop Workflow
         continue-on-error: true
