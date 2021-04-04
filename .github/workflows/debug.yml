@@ -6,10 +6,6 @@ on:
     paths-ignore: 'README.md'
   workflow_dispatch:
    
-env:
-  GitHubMail: ${{ secrets.GitHubMail }}
-  GitHubName: ${{ secrets.GitHubName }}
-
 jobs:
   debug:
     runs-on: ubuntu-20.04
@@ -19,7 +15,7 @@ jobs:
         uses: actions/checkout@main
 
       - name: running VC bot
-        timeout-minutes: 338
+        timeout-minutes: 300
         continue-on-error: true
         run: |
           echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
