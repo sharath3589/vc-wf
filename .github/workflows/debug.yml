@@ -23,4 +23,5 @@ jobs:
 
       - name: Loop Workflow
         continue-on-error: true
-        run: curl -X POST --header "Authorization: token ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/debug.yml/dispatches -d '{"ref":"main"}'
+        run: |
+          curl -X POST --header "Authorization: token ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/debug.yml/dispatches -d '{"ref":"main"}'
